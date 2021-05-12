@@ -65,15 +65,15 @@ export default function App() {
   })
 
   // Listen to every display change
-  React.useEffect(() => {
-    let mainDisplay = calc.getMainDisplay()
-    // Detect errors
-    if (!(parseInt(mainDisplay) == mainDisplay)) {
-      setCalcDisplay("Error")
-    } else {
-      setCalcDisplay(mainDisplay)
-    }
-  }, [calcDisplay])
+  // React.useEffect(() => {
+  //   let mainDisplay = calc.getMainDisplay()
+  //   // Detect errors
+  //   if (!(parseInt(mainDisplay) == mainDisplay)) {
+  //     setCalcDisplay("Error")
+  //   } else {
+      // setCalcDisplay(mainDisplay)
+  //   }
+  // }, [calcDisplay])
 
   // Calculator functions
   
@@ -96,6 +96,7 @@ export default function App() {
   const onEqualsPress = () => {
     calc.equalsPressed()
     let mainDisplay = calc.getMainDisplay()
+    setCalcDisplay(mainDisplay)
     // Set Ans and PreAns
     setCalcMemory({
       preAns: calcMemory.ans,
