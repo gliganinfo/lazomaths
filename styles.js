@@ -34,7 +34,7 @@ export default StyleSheet.create({
     fontFamily: 'Mono700',
     fontSize: 30,
     textAlign: 'right',
-    marginBottom: 10,
+    marginBottom: 15,
     lineHeight: 35
   },
   calcHistory: {

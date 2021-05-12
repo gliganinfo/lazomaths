@@ -8,7 +8,32 @@ import {
   Vibration
 } from 'react-native'
 
+import { setCustomText } from 'react-native-global-props'
+import { 
+  useFonts,
+  IBMPlexMono_400Regular as Mono400,
+  IBMPlexMono_400Regular_Italic as Mono400Italic,
+  IBMPlexMono_500Medium as Mono500,
+  IBMPlexMono_500Medium_Italic as Mono500Italic,
+  IBMPlexMono_600SemiBold as Mono600,
+  IBMPlexMono_600SemiBold_Italic as Mono600Italic,
+  IBMPlexMono_700Bold as Mono700,
+  IBMPlexMono_700Bold_Italic as Mono700Italic 
+} from '@expo-google-fonts/ibm-plex-mono'
+
+// Set default font to IBM Plex Mono
+setCustomText({ 
+  style: { 
+    fontFamily: 'Mono400'
+  }
+})
+
 export default function CalcBtn(props) {
+  const [fontsLoaded] = useFonts({
+    Mono400,
+    Mono600Italic,
+    Mono700
+  })
 
   const buttonWidth = (Dimensions.get("window").width / 4) - 5
 
