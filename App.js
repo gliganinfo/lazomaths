@@ -59,13 +59,23 @@ setCustomText({
 
 export default function App() {
   const [calcDisplay, setCalcDisplay] = React.useState('0')
+  const [calcMemory, setCalcMemory] = React.useState({
+    ans: '0',
+    preAns: '0'
+  })
 
+  // Listen to every display change
+  React.useEffect(() => {
+    let mainDisplay = calc.getMainDisplay()
+    // Detect errors
+    if (!(parseInt(mainDisplay) == mainDisplay)) {
+      setCalcDisplay("Error")
+    } else {
+      setCalcDisplay(mainDisplay)
+    }
+  }, [calcDisplay])
 
   // Calculator functions
-
-  const updateDisplayState = (displayContent) => {
-    setCalcDisplay(displayContent)
-  }
   
   const onDigitPress = (digit) => {
     calc.addDigit(digit)
@@ -85,11 +95,12 @@ export default function App() {
 
   const onEqualsPress = () => {
     calc.equalsPressed()
-    if (calc.getMainDisplay() == 'NaN') {
-      setCalcDisplay("Error")
-    } else {
-      setCalcDisplay(calc.getMainDisplay())
-    }
+    let mainDisplay = calc.getMainDisplay()
+    // Set Ans and PreAns
+    setCalcMemory({
+      preAns: calcMemory.ans,
+      ans: parseInt(mainDisplay) || 0
+    })
   }
 
   const onClearPress = () => {
@@ -175,7 +186,6 @@ export default function App() {
 
             <Text style={styles.calcResult}>{calcDisplay}</Text>
           </ScrollView>
-          {/* { color: '#797766' } */}
         </View>
 
         <View style={styles.buttonKeyboard}>
@@ -187,18 +197,18 @@ export default function App() {
             <CalcBtn text="⌫" bg="#C2BEA2" color="#000" onPress={() => onBackspacePress()} />
           </View>
 
-          {/* <View style={styles.buttonRow}>
-            <CalcBtn text="sen" bg="#E8E4BB" color="#97947C" onPress={() => null} />
-            <CalcBtn text="cos" bg="#E8E4BB" color="#97947C" onPress={() => null} />
-            <CalcBtn text="tan" bg="#E8E4BB" color="#97947C" onPress={() => null} />
-            <CalcBtn text="e" bg="#E8E4BB" color="#97947C" onPress={() => null} />
-          </View> */}
+          <View style={styles.buttonRow}>
+            <CalcBtn text="sen" bg="#E8E4BB" color="#97947C" onPress={() => onUnaryOperatorPress(oc.SineOperator)} />
+            <CalcBtn text="cos" bg="#E8E4BB" color="#97947C" onPress={() => onUnaryOperatorPress(oc.CosineOperator)} />
+            <CalcBtn text="tan" bg="#E8E4BB" color="#97947C" onPress={() => onUnaryOperatorPress(oc.TangentOperator)} />
+            <CalcBtn text="log10" bg="#E8E4BB" color="#97947C" onPress={() => onUnaryOperatorPress(oc.LogBase10Operator)} />
+          </View>
 
           <View style={styles.buttonRow}>
             <CalcBtn text="^" bg="#E8E4BB" color="#97947C" onPress={() => onBinaryOperatorPress(oc.ExponentialOperator)} />
             <CalcBtn text="%" bg="#E8E4BB" color="#97947C" onPress={() => onUnaryOperatorPress(oc.PercentOperator)} />
             <CalcBtn text="√" bg="#E8E4BB" color="#97947C" onPress={() => onUnaryOperatorPress(oc.SquareRootOperator)} />
-            <CalcBtn text="π" bg="#E8E4BB" color="#97947C" onPress={() => null} />
+            <CalcBtn text="π" bg="#E8E4BB" color="#97947C" onPress={() => onUnaryOperatorPress(oc.PiOperator)} />
           </View>
 
           <View style={styles.buttonRow}>
@@ -219,14 +229,14 @@ export default function App() {
             <CalcBtn text="4" onPress={() => onDigitPress('4')} />
             <CalcBtn text="5" onPress={() => onDigitPress('5')} />
             <CalcBtn text="6" onPress={() => onDigitPress('6')} />
-            <CalcBtn text="PreAns" bg="#C2BEA2" color="#000" onPress={() => null} />
+            <CalcBtn text="PreAns" bg="#C2BEA2" color="#000" onPress={() => onDigitPress(calcMemory.preAns)} />
           </View>
 
           <View style={styles.buttonRow}>
             <CalcBtn text="1" onPress={() => onDigitPress('1')} />
             <CalcBtn text="2" onPress={() => onDigitPress('2')} />
             <CalcBtn text="3" onPress={() => onDigitPress('3')} />
-            <CalcBtn text="Ans" bg="#C2BEA2" color="#000" onPress={() => null} />
+            <CalcBtn text="Ans" bg="#C2BEA2" color="#000" onPress={() => onDigitPress(calcMemory.ans)} />
           </View>
 
           <View style={styles.buttonRow}>
